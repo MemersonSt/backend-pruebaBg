@@ -12,7 +12,7 @@
         public int Stock { get; set; }
         public decimal Price { get; set; }
         public bool IsLote { get; set; }
-        public string Lote { get; set; }
+        public string? Lote { get; set; }
         public DateTime? DateLote { get; set; }
         public bool IsActive { get; set; }
         public string? State { get; set; }

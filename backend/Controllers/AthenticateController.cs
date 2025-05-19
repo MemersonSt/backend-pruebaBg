@@ -1,6 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using backend.business.user;
+﻿using backend.business.user;
 using backend.dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +19,7 @@ namespace backend.Controllers
         public async Task<IActionResult> Authenticate([FromBody] AuthDTO auth)
         {
             var token = await _user.Authenticate(auth);
-            if (token == null) return Unauthorized();
+            if (token == null) return NotFound("Usuaurio no Encontrado"); 
 
             Response.Cookies.Append("token", token, new CookieOptions
             {
@@ -29,7 +27,7 @@ namespace backend.Controllers
                 Secure = true,
                 SameSite = SameSiteMode.None,
                 Path = "/",
-                Expires = DateTimeOffset.UtcNow.AddDays(1)
+                Expires = DateTimeOffset.UtcNow.AddHours(1)
             });
 
             return Ok();
@@ -50,7 +48,13 @@ namespace backend.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("token");
+            Response.Cookies.Delete("token", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                Path = "/",
+                SameSite = SameSiteMode.None
+            });
             return Ok();
         }
 

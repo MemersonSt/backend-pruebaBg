@@ -10,6 +10,7 @@ namespace backend.business.products
         Task<ProductsDTO> GetByCodeProduct(string code);
         Task<ProductsDTO> Insert(ProductsDTO product);
         Task<ProductsDTO> Update(ProductsDTO product);
+        Task<bool> DeletePriceProduct(int code);
         Task<bool> Delete(int code);
     }
 }

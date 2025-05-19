@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
             {
                 policy.WithOrigins("http://localhost:5173")
-                      .WithMethods("POST", "PUT", "GET")
+                      .WithMethods("POST", "PUT", "GET", "DELETE")
                       .AllowAnyHeader()
                       .AllowCredentials();
             });
@@ -49,7 +49,7 @@ builder.Services.AddAuthentication("Cookies")
                     };
                 });
 
-var logPath = Path.Combine(AppContext.BaseDirectory, "logs", "log-.txt");
+var logPath = Path.Combine(Directory.GetCurrentDirectory(), "logs", "log-.txt");
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -71,7 +71,6 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

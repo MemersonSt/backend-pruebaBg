@@ -291,5 +291,23 @@ namespace backend.business.products
                 throw;
             }
         }
+
+        public async Task<bool> DeletePriceProduct(int code)
+        {
+            using var trasaction = await Context.Database.BeginTransactionAsync();
+            try
+            {
+                var price = await Context.ProductsPrices.FindAsync(code);
+                Context.ProductsPrices.Remove(price);
+                await trasaction.CommitAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await trasaction.RollbackAsync();
+                _logger.LogError(ex, "Error al eliminar el precio del producto: {message}", ex.Message);
+                throw;
+            }
+        }
     }
 }

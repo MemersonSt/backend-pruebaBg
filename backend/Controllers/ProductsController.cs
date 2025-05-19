@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly IProducts _products;
@@ -89,12 +89,26 @@ namespace backend.Controllers
             }
         }
 
-        [HttpDelete("/{code}")]
+        [HttpDelete("delete/{code}")]
         public async Task<IActionResult> Delete(int code)
         {
             try
             {
                 var updatedProduct = await _products.Delete(code);
+                return Ok(updatedProduct);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("deleteprice/{code}")]
+        public async Task<IActionResult> DeletePrice(int code)
+        {
+            try
+            {
+                var updatedProduct = await _products.DeletePriceProduct(code);
                 return Ok(updatedProduct);
             }
             catch (Exception ex)
